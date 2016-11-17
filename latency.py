@@ -16,16 +16,12 @@ ip_range_dict = {"203.113.128.0/18": "VT", "220.231.64.0/18": "VT", "125.234.0.0
 
 def check_latency(k,v):
     result = commands.getoutput("fping -s -q -g %s -r 1" % k)
-    print result.split('\n')[11].split(" ")[1]
-    print result.split('\n')[12].split(" ")[1]
-    print result.split('\n')[13].split(" ")[1]
+    print result.splitlines()[-3].split(" ")[1]
     data = {
         "time": time.strftime("%m/%d/%Y %H:%M:%S"),
         "ipaddress": k,
         "isp":v,
-        "minrtt": result.split('\n')[11].split(" ")[1],
-        "avgrtt": result.split('\n')[12].split(" ")[1],
-        "maxrtt": result.split('\n')[13].split(" ")[1]
+        "avgrtt": result.splitlines()[-3].split(" ")[1]
     }
     print data
     with open('/var/log/vccloudlatency.log', 'a') as outfile:
